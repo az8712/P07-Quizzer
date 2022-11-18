@@ -3,7 +3,7 @@ import java.util.Arrays;
 public class QuizzerTester {
     
     public static void main(String[] args) {
-        
+        System.out.println(testMultipleChoiceQuestion());
     }
 
     public static boolean runAllTests() {
@@ -50,7 +50,17 @@ public class QuizzerTester {
         if (!testDataInput.getQuestion().equals("testQ3")) {
             return false;
         }
-        if (!testDataInput.getAnswers().equals("1. a1 2. a2 3. a3")) {
+
+        String s = "";
+        String[] answers = new String[]{"a1", "a2", "a3"};
+        for (int i = 1; i <= 3; i++) {
+            s += i + ". " + answers[i-1] + "\n";
+        }
+        s = s.trim();
+
+        if (!testDataInput.getAnswers().equals(s)) {
+            System.out.println(testDataInput.getAnswers());
+            System.out.println(s);
             return false;
         }
         if (testDataInput.getCorrectAnswerIndex() != 2) {
@@ -63,6 +73,25 @@ public class QuizzerTester {
             return false;
         }
         
+       
+        
+        String questionText = "QUESTION TITLE: " + "\"" + "test3" + "\"" + "\n" + "Question:\n"
+        + "testQ3" + "\n" + "Available Answers:\n" + s;
+        questionText = questionText.trim();
+
+        if (!testDataInput.toString().equals(questionText)) {
+            return false;
+        }
+
+
+        MultipleChoiceQuestion testEquals = new MultipleChoiceQuestion("test3", "testQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 2, 5);
+
+        if (!testDataInput.equals(testEquals)) {
+            return false;
+        }
+        return true;
         
     }
 }
