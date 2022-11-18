@@ -3,11 +3,12 @@ import java.util.Arrays;
 public class QuizzerTester {
     
     public static void main(String[] args) {
-        System.out.println(testMultipleChoiceQuestion());
+        System.out.println("testMultipleChoiceQuestion(): " + testMultipleChoiceQuestion());
+        System.out.println("testLinkedNode(): " + testLinkedNode());
     }
 
     public static boolean runAllTests() {
-
+        
         return false; // default return statement
     }
     /**
@@ -93,5 +94,29 @@ public class QuizzerTester {
         }
         return true;
         
+    }
+
+    public static boolean testLinkedNode() {
+        LinkedNode<String> noNextTest = new LinkedNode<String>("test with no next node");
+        if (!noNextTest.toString().equals(noNextTest.getData().toString())) {
+            System.out.println("Linked node with no next node returns incorrect toString output");
+            return false;
+        }
+        if (!noNextTest.getData().equals("test with no next node")) {
+            System.out.println("LinkedNode does not return correctly when getData is called");
+            return false;
+        }
+        if (noNextTest.getNext() != null) {
+            System.out.println("node with no next node does not return null when getNext is called");
+            return false;
+        }
+        noNextTest.setNext(new LinkedNode<String>("this is another test node"));
+        if (!noNextTest.getNext().getData().equals("this is another test node")) {
+            System.out.println("LinkedNode setNext is not working as expected");
+            return false;
+        }
+        
+
+        return true;
     }
 }
