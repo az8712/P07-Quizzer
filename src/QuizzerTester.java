@@ -5,6 +5,8 @@ public class QuizzerTester {
     public static void main(String[] args) {
         System.out.println("testMultipleChoiceQuestion(): " + testMultipleChoiceQuestion());
         System.out.println("testLinkedNode(): " + testLinkedNode());
+        System.out.println("testAddFirst(): " + testAddFirst());
+        System.out.println("testAddLast(): " + testAddLast());
     }
 
     public static boolean runAllTests() {
@@ -118,5 +120,51 @@ public class QuizzerTester {
         
 
         return true;
+    }
+    /**
+     * Tests the functionality of ListQuizzer's addFirst method.
+     * @return true if the addFirst method works as intended, false otherwise
+     */
+    public static boolean testAddFirst() {
+        ListQuizzer test = new ListQuizzer();
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        if (!test.getFirst().getData().getTitle().equals("TestCase2")) {
+            return false;
+        }
+        else if (test.getFirst().getData().getTitle().equals("TestCase2")) {
+            return true;
+        }
+        return false;
+    }    
+    /**
+     * Tests the functionality of ListQuizzer's addLast method.
+     * @return true if the method works as intended, false otherwise.
+     */
+    public static boolean testAddLast() {
+        ListQuizzer test = new ListQuizzer();
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        if (!test.getLast().getData().getTitle().equals("TestCase2")) {
+            return false;
+        }
+        else if (test.getLast().getData().getTitle().equals("TestCase2")) {
+            return true;
+        }
+        return false;
     }
 }
