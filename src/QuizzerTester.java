@@ -1,17 +1,52 @@
+//////////////// FILE HEADER (INCLUDE IN EVERY FILE) //////////////////////////
+//
+// Title:    P07 Quizzer
+// Course:   CS 300 Fall 2022
+//
+// Author:   Zaid Ahmed
+// Email:    zahmed8@wisc.edu
+// Lecturer: Hobbes LeGault
+//
+//////////////////// PAIR PROGRAMMERS COMPLETE THIS SECTION ///////////////////
+//
+// Partner Name:    N/A
+// Partner Email:   N/A
+// Partner Lecturer's Name: N/A
+// 
+// VERIFY THE FOLLOWING BY PLACING AN X NEXT TO EACH TRUE STATEMENT:
+//   _x__ Write-up states that pair programming is allowed for this assignment.
+//   _x__ We have both read and understand the course Pair Programming Policy.
+//   _x__ We have registered our team prior to the team registration deadline.
+//
+///////////////////////// ALWAYS CREDIT OUTSIDE HELP //////////////////////////
+//
+// Persons:         none
+// Online Sources:  none
+//
+///////////////////////////////////////////////////////////////////////////////
 import java.util.Arrays;
+import java.util.NoSuchElementException;
+
+import java.util.Iterator;
 
 public class QuizzerTester {
     
+    /**
+     * This method runs the other methods in this class
+     * @param args
+     */
     public static void main(String[] args) {
-        System.out.println("testMultipleChoiceQuestion(): " + testMultipleChoiceQuestion());
-        System.out.println("testLinkedNode(): " + testLinkedNode());
-        System.out.println("testAddFirst(): " + testAddFirst());
-        System.out.println("testAddLast(): " + testAddLast());
+        System.out.println("runAllTests(): " + runAllTests());
     }
-
+    /**
+     * This method runs all the tests in this class
+     * @return true if all tests return true, false otherwise
+     */
     public static boolean runAllTests() {
         
-        return false; // default return statement
+        return (testMultipleChoiceQuestion() && testLinkedNode() && testAddFirst() && testAddLast() && testAdd() 
+            && testGet() && testRemove() && testRemoveFirst() && testRemoveLast() && testQuizQuestionsIterator()
+            && testCorrectQuestionsIterator() && testIncorrectQuestionsIterator()); // default return statement
     }
     /**
      * This method tests whether or not the MultipleChoiceQuestion constructor works as intended
@@ -97,8 +132,31 @@ public class QuizzerTester {
         return true;
         
     }
-
+    /**
+     * This method tests the functionality of the LinkedNode class.
+     * @return true if the class works as expected, false otherwise
+     */
     public static boolean testLinkedNode() {
+        try {
+            LinkedNode<String> noDataTest1 = new LinkedNode<String>(null);
+            return false;
+        }
+        catch (NullPointerException e) { }
+        catch (Exception e) {
+            return false;
+        }
+
+        try {
+            LinkedNode<String> noDataTest2 = new LinkedNode<String>(null, new LinkedNode<String>("efe"));
+            return false;
+        }
+        catch (NullPointerException e) { }
+        catch (Exception e) {
+            return false;
+        }
+
+
+
         LinkedNode<String> noNextTest = new LinkedNode<String>("test with no next node");
         if (!noNextTest.toString().equals(noNextTest.getData().toString())) {
             System.out.println("Linked node with no next node returns incorrect toString output");
@@ -128,6 +186,14 @@ public class QuizzerTester {
     public static boolean testAddFirst() {
         ListQuizzer test = new ListQuizzer();
 
+        try {
+            test.addFirst(null);
+            return false;
+        }
+        catch (NullPointerException e) { }
+        catch (Exception e) {
+            return false;
+        }
         test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
             "a1", "a2", "a3"
         }, 2, 1));
@@ -136,10 +202,10 @@ public class QuizzerTester {
             "a1", "a2", "a3"
         }, 1, 2));
 
-        if (!test.getFirst().getData().getTitle().equals("TestCase2")) {
+        if (!test.getFirst().getTitle().equals("TestCase2")) {
             return false;
         }
-        else if (test.getFirst().getData().getTitle().equals("TestCase2")) {
+        else if (test.getFirst().getTitle().equals("TestCase2")) {
             return true;
         }
         return false;
@@ -151,6 +217,15 @@ public class QuizzerTester {
     public static boolean testAddLast() {
         ListQuizzer test = new ListQuizzer();
 
+        try {
+            test.addLast(null);
+            return false;
+        }
+        catch (NullPointerException e) { }
+        catch (Exception e) {
+            return false;
+        }
+
         test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
             "a1", "a2", "a3"
         }, 2, 1));
@@ -159,12 +234,361 @@ public class QuizzerTester {
             "a1", "a2", "a3"
         }, 1, 2));
 
-        if (!test.getLast().getData().getTitle().equals("TestCase2")) {
+        if (!test.getLast().getTitle().equals("TestCase2")) {
             return false;
         }
-        else if (test.getLast().getData().getTitle().equals("TestCase2")) {
+        else if (test.getLast().getTitle().equals("TestCase2")) {
             return true;
         }
         return false;
     }
+    /**
+     * Tests the functionality of ListQuizzer's get method
+     * @return true if the method works as intended, false otherwise
+     */
+    public static boolean testGet() {
+        ListQuizzer test = new ListQuizzer();
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        if (!test.get(0).getTitle().equals("TestCase1")) {
+            System.out.println("e");
+            return false;
+        }
+        else if (!test.get(2).getTitle().equals("TestCase3")) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Tests the functionality of ListQuizzer's add method
+     * @return true if the method works as intended, false otherwise
+     */
+    public static boolean testAdd() {
+        ListQuizzer test = new ListQuizzer();
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+
+        try {
+            test.add(0, null);
+            return false;
+        }
+        catch (NullPointerException e) { }
+        catch (Exception e) {
+            return false;
+        }
+
+        try {
+            test.add(3132323, new MultipleChoiceQuestion("TestCase5", "TestQ5", new String[]{
+                "a1", "a2", "a3"
+            }, 1, 2));
+            return false;
+        }
+        catch (IndexOutOfBoundsException e) { }
+        catch (Exception e) {
+            return false;
+        }
+
+        test.add(1, new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        if (!test.get(1).getTitle().equals("TestCase4")) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Tests the functionality of the remove method in the ListQuizzer class
+     * @return true if the method works as intended, false otherwise
+     */
+    public static boolean testRemove() {
+        ListQuizzer test = new ListQuizzer();
+
+        try {
+            test.remove(0);
+            return false;
+        }
+        catch (IndexOutOfBoundsException e) {
+        }
+        catch (Exception e) {
+            return false;
+        }
+        // add nodes to the list
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.add(1, new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+       
+        // remove node
+        
+        try {
+            test.remove(2133123123);
+            return false;
+        }
+        catch (IndexOutOfBoundsException e) { }
+        catch (Exception e) {
+            return false;
+        } 
+
+        
+
+        test.remove(1);
+    
+
+        // test if everything worked correctly
+        if (test.size() != 3) {
+            System.out.println(test.size());
+            return false;
+        }
+        if (!test.get(1).getTitle().equals("TestCase2")) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Tests the functionality of the removeFirst method in ListQuizzer
+     * @return true if the method works as intended, false otherwise
+     */
+    public static boolean testRemoveFirst() {
+        ListQuizzer test = new ListQuizzer();
+
+        try {
+            test.removeFirst();
+            return false;
+        }
+        catch (NoSuchElementException e) { }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        // add nodes to the list
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.add(1, new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+       
+
+        // remove the first node
+        test.removeFirst();
+
+        // check if it was done correctly
+        if (test.size() != 3) {
+            System.out.println(test.size());
+            return false;
+        }
+        if (!test.get(0).getTitle().equals("TestCase4")) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * Tests the functionality of the removeLast method in ListQuizzer
+     * @return true if the method works as intended, false otherwise
+     */
+    public static boolean testRemoveLast() {
+        ListQuizzer test = new ListQuizzer();
+
+        try {
+            test.removeLast();
+            return false;
+        }
+        catch (NoSuchElementException e) { }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        // add nodes to the list
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.add(1, new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+       
+
+        // remove the first node
+        test.removeLast();
+
+        // check if it was done correctly
+        if (test.size() != 3) {
+            System.out.println(test.size());
+            return false;
+        }
+        if (!test.getLast().getTitle().equals("TestCase2")) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * This method test the functionality of the QuizQuestionsIterator.
+     * @return true if the method works as intended, false otherwise
+     */
+    public static boolean testQuizQuestionsIterator() {
+        ListQuizzer test = new ListQuizzer();
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] { // add elements to the list
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+
+        Iterator<MultipleChoiceQuestion> testIter = test.iterator(); // create an iterator
+
+        MultipleChoiceQuestion[] list = new MultipleChoiceQuestion[]{ // create an array to compare the iterator results with
+            new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] {
+                "a1", "a2", "a3"
+            }, 2, 1),
+            new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+                "a1", "a2", "a3"
+            }, 1, 2),
+            new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+                "a1", "a2", "a3"
+            }, 1, 2),
+            new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+                "a1", "a2", "a3"
+            }, 1, 2)
+        };
+
+        boolean returnsCorrectly = true;
+
+        for (int i = 0; i < list.length; i++) {
+            if (!list[i].equals(testIter.next()))
+            {
+                returnsCorrectly = false;
+            }
+        }
+
+        return returnsCorrectly;
+    }
+    /**
+     * this method checks the functionality of the CorrectQuestionsIterator
+     * @return true if it works as intended, false otherwise
+     */
+    public static boolean testCorrectQuestionsIterator() {
+        ListQuizzer test = new ListQuizzer();
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] { // add elements to the list
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.switchMode(ListingMode.CORRECT); // switch listing mode
+        Iterator<MultipleChoiceQuestion> testIter = test.iterator(); // create an iterator
+
+        if (testIter.hasNext()) {
+            return false;
+        }
+        return true;
+    }
+    /**
+     * this method checks the functionality of the IncorrectQuestionsIterator
+     * @return true if it works as intended, false otherwise
+     */
+    public static boolean testIncorrectQuestionsIterator() {
+        ListQuizzer test = new ListQuizzer();
+
+        test.addFirst(new MultipleChoiceQuestion("TestCase1", "TestQ1", new String[] { // add elements to the list
+            "a1", "a2", "a3"
+        }, 2, 1));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase2", "TestQ2", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase3", "TestQ3", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.addLast(new MultipleChoiceQuestion("TestCase4", "TestQ4", new String[]{
+            "a1", "a2", "a3"
+        }, 1, 2));
+
+        test.switchMode(ListingMode.INCORRECT); // switch listing mode
+        Iterator<MultipleChoiceQuestion> testIter = test.iterator(); // create an iterator
+
+        if (!testIter.hasNext()) { // if no incorrect questions are found, return false
+            return false;
+        }
+        return true;
+    }
+
+
 }
