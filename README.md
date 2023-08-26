@@ -2,4 +2,4 @@
 
 CS project for CS300 at University of Wisconsin-Madison
 
-Private for obvious reasons
+Java implementation of a text-based quizzer.
